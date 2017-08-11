@@ -1,0 +1,13 @@
+---
+---
+
+@import "{{ site.theme }}";
+
+li {
+  margin-bottom: 4em;
+  list-style: none;
+}
+
+li:before {
+  content: '\273F';
+}
