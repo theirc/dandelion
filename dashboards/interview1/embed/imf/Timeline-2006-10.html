@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>IMF Forecasts - Growth Comparison (World)</title>
+		<link href="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css" rel="stylesheet" />
+		<script src="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+		<style>
+		@import url(//fonts.googleapis.com/css?family=Lato);
+		body { display: block;
+		margin:auto;
+		}
+		p, .c3-legend-item, text, .c3-tooltip-container {
+		font-family: Lato;
+		font-size: 13px;
+		color: rgba(0,0,0,.6);
+		fill: rgba(0,0,0,.6);
+		}
+		.c3-tooltip th {
+		background-color: #aaa;
+		font-size: 13px;
+		padding: 2px 5px;
+		text-align: left;
+		color: #FFF;
+		}
+		.c3-line {
+			stroke-width: 2px;
+		}
+		.c3-grid line {
+				stroke: grey !important;
+				opacity: 0.5 !important;
+				}
+				.c3 line, .c3 path {
+				stroke: lightgrey;
+				}
+				.tick line{ opacity: 0; }
+		</style>
+	</head>
+	<body>
+		<div id="chart"><svg></svg></div>
+		<script>
+			var chart = c3.generate({
+			bindto: d3.select('#chart'),
+			data: {
+				x: 'Date',
+				columns: [['Date', '2006-03-20', '2006-09-22', '2007-03-20', '2007-09-22', '2008-03-20', '2008-09-22', '2009-03-20', '2009-09-22', '2010-03-20', '2010-09-22'],
+                ['Forecast same year', 0.0488451749690346,0.0514941056886087,0.0493664960256997,0.0523141863204266,0.0373404860437945,0.0391025132796461,-0.0131898394816046,-0.0105892285747611,0.0421693678246282,0.0476568503225514],
+                ['Real GDP growth', 0.0501872363161,0.0508688131787,0.0515333330028,0.0516576942759,0.0302142805835,0.0283376173111,-0.0052359875604,-0.0066318430404,0.0526516805989,0.0513665222505],],
+				type: 'line',
+				colors: {'Forecast same year': '#AA4B39', 'Real GDP growth': '#FFB7AA'}
+				},
+			point: {
+
+				},
+			grid: {
+				focus:{
+				show: false
+				},
+				x: {
+					show: false
+				},
+				y: {
+					show: false,
+					lines: [{value: 0, text: ''}]
+					}
+				},
+			tooltip: {
+				format: {
+				title: d3.time.format("%Y-%m"),
+				value: d3.format('.2p')
+				}
+				},
+			axis: {
+				y: {
+					min: -0.02, max: 0.06,
+					tick: {
+							values: [-0.02, 0.00, 0.02, 0.04, 0.06],
+							format: d3.format('p')
+						}
+				},
+				x: {
+					type: 'timeseries',
+					
+						label: 	{text: '',
+							position: 'outer-right'
+							},
+						tick: {
+							values: ['2007-01-01', '2008-01-01', '2009-01-01', '2010-01-01'],
+					format: '%Y',
+					culling: {
+				max: 6
+							}
+						}
+					}
+				},
+			legend: {
+				// remove legend interaction
+				item: {
+				            onclick: function () {}
+				        },
+				padding: 0,
+				},
+			padding: {
+				right: 10
+				}
+		});
+	</script>
+</body>
+</html>

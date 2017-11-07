@@ -1,0 +1,18 @@
+
+.primary-color {color: #93e4c6} /* male */
+.secondary-color {color: #68bec5} /* control */
+.color-3 {color: #f8c94b} 
+.color-4 {color: #f2a74a} 
+.color-5 {color: #e380b9} /* intervention */
+.color-6 {color: #9398dd} /* female */
+
+
+color: {
+        pattern: ['#93e4c6', '#68bec5', '#f8c94b', '#f2a74a', '#e380b9', '#9398dd']
+    }
+
+colors: {'Intervention': '#e380b9', 'Control': '#68bec5'},
+
+colors: {'Male': '#93e4c6', 'Female': '#9398dd'},
+
+

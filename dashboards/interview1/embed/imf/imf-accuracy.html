@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>IMF Accuracy</title>
+		<link href="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css" rel="stylesheet" />
+		<script src="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+		<style>
+		@import url(//fonts.googleapis.com/css?family=Lato);
+		body { display: block;
+		margin:auto;
+		}
+		p, .c3-legend-item, text, .c3-tooltip-container {
+		font-family: Lato;
+		font-size: 13px;
+		color: rgba(0,0,0,.6);
+		fill: rgba(0,0,0,.6);
+		}
+		.c3-tooltip th {
+		background-color: #aaa;
+		font-size: 13px;
+		padding: 2px 5px;
+		text-align: left;
+		color: #FFF;
+		}
+		.c3-line {
+			stroke-width: 2px;
+		}
+		.c3-grid line {
+				/*stroke: indianred !important;*/
+				}
+				.c3 line, .c3 path {
+				stroke: lightgrey;
+				}
+				.tick line{ opacity: 0; }
+		</style>
+	</head>
+	<body>
+		<div id="chart"><svg></svg></div>
+		<script>
+			var chart = c3.generate({
+			bindto: d3.select('#chart'),
+			data: {
+				columns: [['Average Difference (Real GDP growth trend is down)', 0.00453723715189, 0.01430711335648, 0.01584550045952, 0.01633208395053, 0.01654361651348, 0.01663571984812],['Average Difference (Real GDP growth trend is up)', 0.00391699029872, 0.00757977255313, 0.00749213426472, 0.00617857303841, 0.007070396963880001, 0.00847032915053],],
+				type: 'bar',
+				colors: {'Average Difference (Real GDP growth trend is down)': '#2b8cbe', 'Average Difference (Real GDP growth trend is up)': '#a6bddb'}
+				},
+			grid: {
+				focus:{
+				show: false
+				},
+				x: {
+					show: false
+				},
+				y: {
+					show: true,
+					
+					}
+				},
+			tooltip: {
+				format: {
+				
+				value: d3.format(",.3p")
+				}
+				},
+			axis: {
+				y: {
+					min: 0.00, max: 0.02, padding: 0,
+					tick: {
+							
+							format: d3.format(".2p"),
+							count: 5,
+
+						}
+					},
+				x: {
+					type: 'category',
+					categories: ['0 (Same) Year Forecast', '1 Year Forecast', '2 Year Forecast', '3 Year Forecast', '4 Year Forecast', '5 Year Forecast'],
+					
+					height: 100,
+						label: 	{text: '',
+							position: 'outer-right'
+							},
+						tick: {
+							width: 200,
+							
+							
+							rotate: -45,
+							
+						},
+					}
+				},
+			legend: {
+				// remove legend interaction
+				item: {
+				            onclick: function () {}
+				        },
+				padding: 25,
+				},
+			padding: {
+				right: 10
+				}
+		});
+	</script>
+</body>
+</html>

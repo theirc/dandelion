@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title> European Parliament Committees Watch </title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="//rawgit.com/misoproject/d3.chart/master/d3.chart.min.js"></script>
+    <script src="//rawgit.com/q-m/d3.chart.sankey/master/d3.chart.sankey.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/lodash@4.17.4/lodash.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+        window.ga = window.ga || function () {
+            (ga.q = ga.q || []).push(arguments)
+        };
+        ga.l = +new Date;
+        ga('create', 'UA-87388215-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+    <script async="" src="//www.google-analytics.com/analytics.js"></script>
+    <link href="/css/kube.min.css" rel="stylesheet" type="text/css">
+    <link rel="apple-touch-icon" sizes="57x57" href="//www.communia-association.org/apple-touch-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="//www.communia-association.org/apple-touch-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="//www.communia-association.org/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="//www.communia-association.org/apple-touch-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="//www.communia-association.org/apple-touch-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="//www.communia-association.org/apple-touch-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="//www.communia-association.org/apple-touch-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="//www.communia-association.org/apple-touch-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="//www.communia-association.org/apple-touch-icon-180x180.png">
+    <link rel="icon" type="image/png" href="//www.communia-association.org/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="//www.communia-association.org/favicon-194x194.png" sizes="194x194">
+    <link rel="icon" type="image/png" href="//www.communia-association.org/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="//www.communia-association.org/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="//www.communia-association.org/favicon-16x16.png" sizes="16x16">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#128396">
+    <link rel="icon" href="//www.communia-association.org/wp-content/uploads/2016/11/Communia-sign_black-transparent.png" sizes="192x192">
+    <link rel="apple-touch-icon-precomposed" href="//www.communia-association.org/wp-content/uploads/2016/11/Communia-sign_black-transparent.png">
+    <meta name="msapplication-TileImage" content="//www.communia-association.org/wp-content/uploads/2016/11/Communia-sign_black-transparent.png">
+    <style>
+        @import url('//fonts.googleapis.com/css?family=PT+Sans:400,700');
+
+        body {
+            padding-right: 20px;
+            /* min-width: 600px; */
+            max-width: 1200px;
+            margin: auto;
+            height: 100%;
+            font: 13px 'PT Sans', sans-serif;
+        }
+
+        #chart {
+            height: 500px;
+            font: 13px 'PT Sans', sans-serif;
+        }
+
+        .node rect {
+            fill-opacity: 1;
+            shape-rendering: crispEdges;
+            stroke-width: 0;
+        }
+
+        .node text {
+            /* text-shadow: 0 1px 0 #fff; */
+            font: 16px 'PT Sans', sans-serif;
+            /* font-weight: bold; */
+        }
+
+        .link {
+            fill: none;
+            stroke: #000;
+            stroke-opacity: .8;
+        }
+
+        .tooltip {
+            background-color: #f7f7f7;
+            padding: 3px 12px;
+            font: 12px 'PT Sans', sans-serif;
+            border: 0px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .tooltip_title {
+            font: 12px 'PT Sans', sans-serif;
+            font-weight: bold;
+            margin: 5px 0;
+            max-width: 300px;
+            word-wrap: normal;
+        }
+
+        .tooltip_body {
+            font: 12px 'PT Sans', sans-serif;
+            margin: 5px 0;
+            max-width: 220px;
+        }
+
+        .h1,
+        h1,
+        .h2,
+        h2,
+        .h3,
+        h3,
+        .h4,
+        h4 {
+            font-family: 'PT Sans', sans-serif;
+            margin-left: 10px;
+            text-align: center;
+        }
+
+        .caption {
+            margin-left: 10px;
+            font-size: 16px;
+            font-style: italic;
+            /* line-height: 24px; */
+        }
+
+        .form-item,
+        form {
+            margin-bottom: 0;
+        }
+
+        #filter,
+        #share {
+            margin-top: 10px;
+        }
+
+        #filter {
+            text-align: center;
+        }
+
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            width: 320px
+        }
+
+        td {
+            width: 160px
+        }
+
+        #embedDialog,
+        #copyURL {
+            cursor: pointer;
+            cursor: hand;
+            font-family: "PT Sans", sans-serif;
+            /* text-decoration: underline; */
+            color: #313439;
+            font-size: 14px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .check {
+            /* top: 50%; */
+            /* left: 50%; */
+            display: inline;
+            /* margin: -30px 0 0 -30px; */
+            stroke-dasharray: 140;
+            stroke-dashoffset: 140;
+            -webkit-animation: fill 0.5s linear normal;
+            animation: fill 0.5s linear normal;
+            -webkit-animation-fill-mode: forwards;
+            animation-fill-mode: forwards;
+        }
+
+        @-webkit-keyframes fill {
+            from {
+                stroke-dashoffset: 140;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @keyframes fill {
+            from {
+                stroke-dashoffset: 140;
+            }
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+
+        @media only screen and (max-width: 500px) {
+            #share {
+                display: none;
+            }
+        }
+
+        .caption {
+            margin: auto;
+            margin-top: 10px;
+            font-size: 14px;
+
+        }
+
+        .logo {
+            width: 37px;
+            float: right;
+            margin-right: 30px;
+            /* vertical-align: middle */
+        }
+        .logo-caption, .logo-caption a {
+            float: right;
+            margin-right: -25px;
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #323232;
+            text-decoration: none;
+
+        }
+
+
+        @media only screen and (max-width: 500px) {
+            .logo, .logo-caption {
+                display: none;
+            }
+        }
+        h2 {
+            text-align: left;
+            font-weight: 700 !important;
+            font: 20px 'PT Sans', sans-serif;
+            color: #323232;
+
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Title will go here -->
+    <h2>Political groups weighted by number of amendments tabled</h2>
+    <!-- Chart will go here -->
+    <div id="chart"></div>
+    <!-- Checkboxes will go here -->
+    <div><a href="https://www.communia-association.org/juri-dsm-am-visualization/" target="_blank"><img class="logo" src="//www.communia-association.org/wp-content/uploads/2016/11/Communia-sign_black-transparent.png"/></a></div>
+    <div class="logo-caption"><a href="https://www.communia-association.org/juri-dsm-am-visualization/" target="_blank">source:<br>COMMUNIA</a></div>
+    <div id="filter" class="form-item form-checkboxes">
+        <form method="post" action="" class="form"></form>
+    </div>
+    <div id="share">
+        <table class="unstyled">
+            <tr>
+                <td>
+                    <span id="copyURL">Copy URL to clipboard</span>
+                    <svg id="checkthis" class="hidden" width="12px" height="12px" viewBox="0 0 59 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                            <path d="M4.5,20.5 L21.0302753,37.0302753 L54.5,4.5" id="line" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
+                                sketch:type="MSShapeGroup"></path>
+                        </g>
+                    </svg>
+                </td>
+                <td>
+                    <span id="embedDialog">Copy embed code &lt; / &gt;</span>
+                    <svg id="checkthat" class="hidden" width="12px" height="12px" viewBox="0 0 59 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                        xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+                            <path d="M4.5,20.5 L21.0302753,37.0302753 L54.5,4.5" id="line" stroke="#000" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"
+                                sketch:type="MSShapeGroup"></path>
+                        </g>
+                    </svg>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+    <script>
+        ////////////////////////////////////////////////
+        // Embed code popup and copy to clipboard logic
+        ///////////////////////////////////////////////.
+
+        function copyTextToClipboard(text) {
+            var textArea = document.createElement("textarea");
+            textArea.style.position = 'fixed';
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            textArea.style.width = '2em';
+            textArea.style.height = '2em';
+            textArea.style.padding = 0;
+            textArea.style.border = 'none';
+            textArea.style.outline = 'none';
+            textArea.style.boxShadow = 'none';
+            textArea.style.background = 'transparent';
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                var successful = document.execCommand('copy');
+                var msg = successful ? 'successful' : 'unsuccessful';
+                console.log('Copying text command was ' + msg);
+            } catch (err) {
+                console.log('Oops, unable to copy');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        $('#copyURL').on('click touchstart', function () {
+            copyTextToClipboard(window.location.href)
+            $('#checkthis').attr('class', 'check');
+            setTimeout("$('#checkthis').attr('class', 'hidden')", 1500);
+        });
+
+        $('#embedDialog').on('click touchstart', function () {
+            copyTextToClipboard('<iframe src="' + window.location.href +
+            '" style="width: 100%; height: 680px; border: 0px none;"></iframe>')
+            $('#checkthat').attr('class', 'check');
+            setTimeout("$('#checkthat').attr('class', 'hidden')", 1500);
+        });
+
+
+        /////////////////////
+        // Begin Chart stuff
+        /////////////////////
+
+        var margin = {
+                top: 10,
+                right: 10,
+                bottom: 10,
+                left: 10
+            },
+            width = document.body.clientWidth - margin.left - margin.right,
+            height = document.body.clientHeight - margin.top - margin.bottom;
+
+        var tooltip = d3.select("body")
+            .append("div")
+            .attr("class", "tooltip")
+            .style("position", "absolute")
+            //.style("z-index", "10")
+            .style("opacity", 0);
+
+        var format = d3.format('.3n')
+
+        d3.csv("data/JURI/sankey-groups-amendments.csv", function (error, csv) {
+
+            /////////////////////////////
+            // 0. Helper functions
+            /////////////////////////////
+
+            // URL key and value concatenation parse (for articles)
+            function concatentateURLParameters() {
+                var query = (window.location.search || '?').substr(1),
+                    map = [];
+                query.replace(/([^&=]+)=?([^&]*)(?:&+|$)/g, function (match, key, value) {
+                    map.push(key + " " + value);
+                });
+                return map;
+            }
+
+            function label(nodes) {
+                return nodes.name;
+            }
+
+            // Sort an array of objects naturally
+            //Usage: unsortedArrayOfObjects.alphaNumObjectSort("name");
+            //Test Case: var unsortedArrayOfObjects = [{name: "a1"}, {name: "a2"}, {name: "a3"}, {name: "a10"}, {name: "a5"}, {name: "a13"}, {name: "a20"}, {name: "a8"}, {name: "8b7uaf5q11"}];
+            //Sorted: [{name: "8b7uaf5q11"}, {name: "a1"}, {name: "a2"}, {name: "a3"}, {name: "a5"}, {name: "a8"}, {name: "a10"}, {name: "a13"}, {name: "a20"}]
+
+            // **Sorts in place**
+            Array.prototype.alphaNumObjectSort = function (attribute, caseInsensitive) {
+                for (var z = 0, t; t = this[z]; z++) {
+                    this[z].sortArray = new Array();
+                    var x = 0,
+                        y = -1,
+                        n = 0,
+                        i, j;
+
+                    while (i = (j = t[attribute].charAt(x++)).charCodeAt(0)) {
+                        var m = (i == 46 || (i >= 48 && i <= 57));
+                        if (m !== n) {
+                            this[z].sortArray[++y] = "";
+                            n = m;
+                        }
+                        this[z].sortArray[y] += j;
+                    }
+                }
+
+                this.sort(function (a, b) {
+                    for (var x = 0, aa, bb;
+                        (aa = a.sortArray[x]) && (bb = b.sortArray[x]); x++) {
+                        if (caseInsensitive) {
+                            aa = aa.toLowerCase();
+                            bb = bb.toLowerCase();
+                        }
+                        if (aa !== bb) {
+                            var c = Number(aa),
+                                d = Number(bb);
+                            if (c == aa && d == bb) {
+                                return c - d;
+                            } else {
+                                return (aa > bb) ? 1 : -1;
+                            }
+                        }
+                    }
+
+                    return a.sortArray.length - b.sortArray.length;
+                });
+
+                for (var z = 0; z < this.length; z++) {
+                    // Here we're deleting the unused "sortArray" instead of joining the string parts
+                    delete this[z]["sortArray"];
+                }
+            }
+
+            // Sort array naturally (a lot easier)
+            var collator = new Intl.Collator(undefined, {
+                numeric: true,
+                sensitivity: 'base'
+            });
+
+
+            /////////////////////////////////////////
+            // 1. Data loading and checkbox rendering
+            /////////////////////////////////////////
+
+            // Building an array with target names
+            var target_list = d3.map(csv, function (d) {
+                return d.target;
+            }).keys()
+
+            // Sort target_list naturally
+            target_list.sort(collator.compare);
+
+            // Building the filter checkboxes
+            d3.select("#filter")
+                .selectAll("input")
+                .data(target_list)
+                .enter()
+                .append("label")
+                .append("input")
+                .attr("type", "checkbox")
+                .attr("class", "filter-check")
+                .attr("value", function (d) {
+                    return d
+                })
+                .attr("id", function (d) {
+                    return d
+                });
+
+            d3.selectAll("label")
+                .data(target_list)
+                .attr("class", "checkbox")
+                .append("text").text(function (d) {
+                    return " " + d
+                })
+
+            // Parsing URL parameters
+            // Look at the URL parameters and adjust the data accordingly
+            var choices = concatentateURLParameters(window.location.href)
+
+            // Bad URL parameter management (e.g. scrubbing .html?faultyValue=2345)
+            // var to tack behind the URL if needed
+            choices = _.remove(choices, function (parameter) {
+                return _.includes(target_list, parameter);
+            })
+
+            var URL = choices.join('&').replace(/\s/g, "=")
+
+            if (choices == undefined) {
+                var choices = []
+            } // if no parameters, change to empty array instead of undefined
+            if (choices.length > 0) {
+                // Set the URL in case the URL was messy
+                window.history.pushState({
+                    page: choices
+                }, choices, window.location.pathname + "?" + URL);
+                for (i = 0; i < choices.length; i++) {
+                    document.getElementById(choices[i]).checked = true;
+                }
+                data = csv.filter(function (d, i) {
+                    return _.includes(choices, d.target);
+                });
+            } else {
+                // Set the URL in case the URL was messy
+                window.history.pushState({
+                    page: choices
+                }, choices, window.location.pathname);
+                data = csv;
+            }
+
+
+            ///////////////////////////////////////////////////////////////////////
+            // Nodes and Links data structure, with sorting of sources and targets.
+            // Sorts source by total score, sorts targets naturally
+            // (e.g. Article 1, Article 2, Article 13)
+            //////////////////////////////////////////////////////////////////////
+
+            function nodesAndLinks() {
+
+                // add sourceScoreTotal to each data point so we can sort on it
+                var sourceScoreTotal = d3.nest()
+                    .key(function (d) {
+                        return d.source;
+                    })
+                    .rollup(function (v) {
+                        return d3.sum(v, function (d) {
+                            return d.Score;
+                        });
+                    })
+                    .entries(data)
+                    .map(function (group) {
+                        return {
+                            total_source: group.key,
+                            total_score: group.values
+                        }
+                    });
+
+                // merge the data and sourceScoreTotal arrays
+                var merged = _.map(data, function (item) {
+                    return _.assign(item, _.find(sourceScoreTotal, ['total_source', item.source]));
+                });
+
+                graph = {
+                    "source_nodes": [],
+                    "target_nodes": [],
+                    "nodes": [],
+                    "links": []
+                };
+
+                merged.forEach(function (d) {
+                    graph.source_nodes.push({
+                        "name": d.source,
+                        "total_score": d.total_score
+                    });
+                    graph.target_nodes.push({
+                        "name": d.target
+                    });
+                    graph.links.push({
+                        "source": d.source,
+                        "target": d.target,
+                        "value": +d.value,
+                        "score": +d['Score'],
+                        "total_amendments": +d.total_amendments,
+                        "total_score": +d.total_score,
+                        "full_source_name": d.full_source_name,
+                        "full_target_name": d.full_target_name
+                    });
+                });
+
+                // Sort All The Things!
+                graph.target_nodes.alphaNumObjectSort("name") // natural sort on name
+                graph.source_nodes.sort(function (a, b) {
+                    return b.total_score - a.total_score;
+                }); // good ol' fashioned sort on total score
+                graph.nodes = graph.source_nodes.concat(graph.target_nodes) // concatenate the source and target arrays
+
+                // return only the distinct nodes
+                graph.nodes = d3.keys(d3.nest()
+                    .key(function (d) {
+                        return d.name;
+                    })
+                    .map(graph.nodes));
+
+
+
+                // loop through each link replacing text with index
+                graph.links.forEach(function (d, i) {
+                    graph.links[i].source = graph.nodes.indexOf(graph.links[i].source);
+                    graph.links[i].target = graph.nodes.indexOf(graph.links[i].target);
+                });
+
+                // now loop through each nodes to make nodes an array of objects
+                // rather than an array of strings
+
+                graph.nodes.forEach(function (d, i) {
+                    graph.nodes[i] = {
+                        "name": d
+                    };
+                });
+
+            };
+
+            nodesAndLinks();
+
+
+
+            ///////////////////////
+            // Building the chart
+            ///////////////////////
+
+
+            var chart = d3.select("#chart").append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .call(responsivefy)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+                .attr("width", width)
+                .attr("height", height - (8 * (margin.top)))
+                .chart("Sankey.Path");
+
+            var quant = d3.scale.quantile().domain(data.map(function (d) {
+                return +d.Score
+            })).range(['#DD412B', '#F29055', '#FDE282', '#D7F281', '#8BD154', '#489B4C']);
+
+
+            // add the link titles and color the links with quant scale above
+            chart
+                .name(label) // node names
+                .colorNodes("lightgrey")
+                .colorLinks(function (d) {
+                    return quant(d.score);
+                })
+                .nodeWidth(10) // width of node
+                .nodePadding(8) // vertical space between nodes
+                .spread(true) // whether to spread nodes vertically after layout
+                .iterations(3) // # of layout iterations
+                .draw(graph);
+
+
+
+            //////////////////////////////////////
+            // Tooltip and other mouseover stuff
+            //////////////////////////////////////
+
+            chart.on('node:mouseover', function (node) {
+
+                // adjusted this magic number to avoid menu collision
+                if (d3.event.pageY > (height - 350)) {
+                    // var yvar = -80;
+                    var yvar = -260;
+                } else {
+                    var yvar = 0;
+                };
+
+                function compare(a, b) {
+                    if (a.value < b.value)
+                        return 1;
+                    if (a.value > b.value)
+                        return -1;
+                    return 0;
+                };
+
+
+                if (d3.event.pageX < window.innerWidth / 2) {
+                    tooltip.html("");
+                    tooltip.append("p").style("font-size", "15px").attr("class", "tooltip_body")
+                        .text(node.sourceLinks[0].full_source_name);
+                    tooltip.append("hr").attr("class", "tooltip_body")
+                    for (i = 0; i < node.sourceLinks.length; i++) {
+                        tooltip.append("p").attr("class", "tooltip_body")
+                            // .text(node.sourceLinks[i].target.name + " (" + node.sourceLinks[i].target.value + " Amendments) → " + node.sourceLinks[i].score);
+                            .text(node.sourceLinks[i].target.name + " → " + node.sourceLinks[i].score);
+                    } // end for loop
+                    tooltip.append("hr").attr("class", "tooltip_body")
+                    tooltip.append("p").attr("class", "tooltip_body")
+                        .text("Amendments: " + node.sourceLinks[0].total_amendments);
+                    tooltip.append("p").attr("class", "tooltip_body")
+                        .text("Total Score: " + format(node.sourceLinks[0].total_score))
+                }
+
+                // Sort the targetlinks by score
+                node.targetLinks.sort(function (a, b) {
+                    return b.score - a.score;
+                });
+
+                if (d3.event.pageX > window.innerWidth / 2) {
+                    tooltip.html("");
+                    tooltip.append("p").style("font-size", "15px").attr("class", "tooltip_body")
+                        .text(node.targetLinks[0].full_target_name);
+                    tooltip.append("hr").attr("class", "tooltip_body")
+                    for (i = 0; i < node.targetLinks.length; i++) {
+                        tooltip.append("p").attr("class", "tooltip_body")
+                            .text(node.targetLinks[i].source.name + " → " + node.targetLinks[i].score);
+                    } // end for loop
+                    tooltip.append("hr").attr("class", "tooltip_body")
+                    tooltip.append("p").attr("class", "tooltip_body")
+                        .text("Amendments: " + node.targetLinks[0].total_amendments);
+                    tooltip.append("p").attr("class", "tooltip_body")
+                        .text("Total Score: " + format(node.targetLinks[0].total_score))
+                }
+
+                tooltip.transition()
+                    .duration(10)
+                    .style("opacity", .9);
+
+                // return tooltip.style("width", document.body.clientWidth * 3 / 7 + "px").style("top", d3.event
+                //     .pageY + yvar + "px");
+
+                                return tooltip.style("left", (window.innerWidth / 2) - 100 + "px").style("top", 100 + "px");
+
+
+            });
+
+            chart.on('node:mouseout', function (node) {
+                tooltip.transition()
+                    .duration(10)
+                    .style("opacity", 0);
+            });
+
+
+
+
+
+
+            ///////////////////////////////////
+            // Update chart on checkbox change
+            //////////////////////////////////
+            var checkBox = d3.selectAll(".filter-check")
+            checkBox.on("change", function () {
+
+                ////////////////////////////
+                // Manage data and URL state
+                ////////////////////////////
+
+                // When checkbox changes, refresh choices array with checked values
+                var choices = []
+                var checkboxes = document.querySelectorAll('input[type=checkbox]:checked')
+                for (var i = 0; i < checkboxes.length; i++) {
+                    choices.push(checkboxes[i].value)
+                }
+                // feeding data filtered from choices array
+                if (choices.length > 0) {
+                    data = csv.filter(function (d, i) {
+                        return _.includes(choices, d.target);
+                    });
+                } else {
+                    data = csv; // so that no boxes checked shows all data
+                }
+                // update url with help of new choices array
+                var URL = choices.join('&').replace(/\s/g, "=")
+                if (choices.length > 0) {
+                    window.history.pushState({
+                        page: choices
+                    }, choices, window.location.pathname + "?" + URL);
+                }
+                // remove ? at end of URL if checkboxes are empty again
+                else {
+                    window.history.pushState({
+                        page: choices
+                    }, choices, window.location.pathname);
+                }
+
+                /////////////////////////////////////////////////////////////////////
+                // Build Nodes and Links data structure with new data from checkboxes
+                /////////////////////////////////////////////////////////////////////
+
+                nodesAndLinks();
+
+
+                ///////////////////////
+                // Building the chart
+                ///////////////////////
+
+                var score_list_data = data.map(function (d) {
+                    return +d.Score
+                })
+
+                chart
+                    .name(label) // node names
+                    .colorNodes("lightgrey")
+                    .colorLinks(function (d) {
+                        return quant(d.score);
+                    })
+                    .nodeWidth(10) // width of node
+                    .nodePadding(8) // vertical space between nodes
+                    .spread(false) // whether to spread nodes vertically after layout
+                    .iterations(1) // # of layout iterations
+                    .draw(graph);
+
+            }); ////////////// //////////////////////////
+            // End on checkbox change update function
+            /////////////////////////////////////////
+
+
+
+
+
+
+
+            ///////////////////////////////
+            // Making the chart responsive
+            ///////////////////////////////
+
+            function responsivefy(svg) {
+                var container = d3.select(svg.node().parentNode),
+                    width = parseInt(svg.style("width")),
+                    height = parseInt(svg.style("height")),
+                    aspect = width / height;
+
+                svg.attr("viewBox", "0 0 " + width + " " + height)
+                    .attr("perserveAspectRatio", "xMinYMid")
+                    .call(resize);
+
+                d3.select(window).on("resize." + container.attr("#chart"), resize);
+
+                function resize() {
+                    var targetWidth = parseInt(container.style("width"));
+                    svg.attr("width", targetWidth);
+                    svg.attr("height", Math.round(targetWidth / aspect));
+                }
+            }
+
+
+        });
+    </script>
+</body>
+
+</html>

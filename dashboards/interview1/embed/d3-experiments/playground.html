@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+text {
+  font: bold 48px monospace;
+}
+
+.enter {
+  fill: blue;
+}
+
+.update {
+  fill: green;
+}
+
+</style>
+<svg width="960" height="500"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+
+var alphabet = "abcdefghijklmnopqrstuvwxyz".split("");
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height"),
+    g = svg.append("g").attr("transform", "translate(32," + (height / 2) + ")");
+
+function update(data) {
+
+  // DATA JOIN
+  // Join new data with old elements, if any.
+  var text = g.selectAll("text")
+    .data(data, function(d) { return d; });
+
+  // UPDATE
+  // Update old elements as needed.
+  text.attr("class", "update");
+
+  // ENTER
+  // Create new elements as needed.
+  //
+  // ENTER + UPDATE
+  // After merging the entered elements with the update selection,
+  // apply operations to both.
+  text.enter().append("text")
+      .attr("class", "enter")
+      .attr("dy", ".35em")
+      .text(function(d) { return d; })
+    .merge(text)
+      .attr("x", function(d, i) { return i * 32; });
+
+  // EXIT
+  // Remove old elements as needed.
+  text.exit().transition().duration(750).remove();
+}
+
+// The initial display.
+update(alphabet);
+
+// Grab a random sample of letters from the alphabet, in alphabetical order.
+update(["a","b","c"])
+
+// update(["a","c","e","f"])
+
+
+// Grab a random sample of letters from the alphabet, in alphabetical order.
+function jan () {function () {
+  update(d3.shuffle(alphabet)
+      .slice(0, Math.floor(Math.random() * 26))
+      .sort())};
+};
+
+
+
+</script>
+
+<button onclick='update(["a","c","e","f"])'>Change</button>

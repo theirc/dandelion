@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Skills over time</title>
+		<link href="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css" rel="stylesheet" />
+		<script src="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+		<link href="/css/font.css" rel="stylesheet" type="text/css">
+		<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	  <!-- <link href="/css/kube.min.css" rel="stylesheet" type="text/css"> -->
+	  <!-- <link href="/css/kube.legenda.css" rel="stylesheet" type="text/css"> -->
+	  <!-- <link href="/css/highlight.css" rel="stylesheet" type="text/css"> -->
+	  <!-- <link href="/css/master.css" rel="stylesheet" type="text/css"> -->
+	  <!-- <link href="/css/kube.demo.css" rel="stylesheet" type="text/css"> -->
+
+	 <!-- <link href="/css/custom.css" rel="stylesheet" type="text/css"> -->
+
+	  <!-- <script src="/js/jquery-2.1.4.min.js" type="text/javascript"> -->
+		<style>
+		@import url(//fonts.googleapis.com/css?family=Lato);
+		body { display: block;
+		margin:auto;
+		}
+		.c3-legend-item, text, .c3-tooltip-container {
+		font-family: Lato;
+		font-size: 12px;
+		color: rgba(0,0,0,.6);
+		fill: rgba(0,0,0,.6);
+		}
+		.c3-tooltip th {
+		background-color: #aaa;
+		font-size: 13px;
+		padding: 2px 5px;
+		text-align: left;
+		color: #FFF;
+		}
+		.c3-line {
+			stroke-width: 2px;
+		}
+		.c3-grid line {
+				stroke: grey !important;
+				opacity: 0.3 !important;
+				}
+				.c3 line, .c3 path {
+				stroke: lightgrey;
+				}
+				.tick line{ opacity: 0; }
+		</style>
+	</head>
+	<body>
+		<div id="chart"><svg></svg></div>
+		<script>
+			var chart = c3.generate({
+			bindto: d3.select('#chart'),
+			data: {
+				x: 'Intervention',
+				columns: [['Intervention', '2018-01-01', '2018-04-01', '2018-07-01', '2018-10-01', '2018-12-31'],['General SEL Score', 60, 68, 71, 88, 92],['Self-awareness', 26, 24, 46, 41, 62],['Self-management', 18, 33, 40, 62, 79],['Social awareness', 18, 33, 34, 52, 72],['Responsible decision-making', 18, 24, 38, 52, 60],['Relationship skills', 28, 38, 49, 57, 71],],
+				type: 'line',
+                selection: {enabled: true}
+				},
+                color: {
+                    pattern: ['#93e4c6', '#68bec5', '#f8c94b', '#f2a74a', '#e380b9', '#9398dd']
+                        },
+			
+			point: {
+                show: true,
+                select: {
+                      r: 7
+                         }
+                    },
+			grid: {
+				focus:{
+				show: false
+				},
+				x: {
+					show: false
+				},
+				y: {
+					show: false,
+					lines: [{value: 0, text: ''}]
+					}
+				},
+			tooltip: {
+				format: {
+				title: d3.time.format("%Y-%m"),
+				value: d3.format('')
+				}
+				},
+			axis: {
+				y: {
+					
+					tick: {
+							
+
+							culling: {
+						max: 6
+							}
+						},
+				},
+				x: {
+					type: 'timeseries',
+					
+						label: 	{text: '',
+							position: 'outer-right'
+							},
+						tick: {
+							
+					format: '%Y-%m',
+					culling: {
+				max: 6
+							}
+						}
+					}
+				},
+			legend: {
+				// remove legend interaction
+				item: {
+				            onclick: function () {}
+				        },
+				// padding: 25,
+				},
+			padding: {
+				right: 20
+				}
+		});
+
+		function selectChartPointsDates (datesToSelect, columnToSelect){
+
+            // Get x values from C3 chart (an object with date objects in this case)
+            var chartXValues = chart.x();
+            var chartXDates = chartXValues[columnToSelect]
+
+            // Convert any array of date object to ISO strings. I used moment.js because new Date() added one hour.
+            function convertToIsoStrings (inputArray) {
+                var outputArray = [];
+                for (var i = 0; i < inputArray.length; i++){
+                    outputArray.push((moment(inputArray[i]).format()))
+                };
+                return outputArray;}
+
+            // Create arrays from chartXvalues and DateToSelect
+            var datesToSelectISO = convertToIsoStrings(datesToSelect);
+            var chartXDatesISO = convertToIsoStrings(chartXDates);
+
+            // Use IndexOf() to look up the index
+            function dateIndexator (datesToSelectISO, chartXDatesISO) {
+                var datesIndex = [];
+                for (var i = 0; i < datesToSelectISO.length; i++){
+                    datesIndex.push(chartXDatesISO.indexOf(datesToSelectISO[i]))
+                };
+                return datesIndex;}
+
+            // Create an array with the index of the given dates (i.e [3, 14, 23])
+            var datesIndexArray = dateIndexator(datesToSelectISO, chartXDatesISO)
+
+            // Run the chart.select function for each index number you have, to
+            // select them on the chart
+            function chartSelector (column, datesIndex) {
+                for (var i = 0; i < datesIndex.length; i++){
+                chart.select([column], [datesIndex[i]]);}}
+
+            // Return the chartSelector function so the points actually get selected
+            return chartSelector(columnToSelect, datesIndexArray);
+
+		}
+
+		
+
+	</script>
+</body>
+</html>

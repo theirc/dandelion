@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+
+
+<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.css">
+<style>
+@import url(//fonts.googleapis.com/css?family=Droid+Sans|Droid+Sans+Mono);
+
+#chart svg {
+  /*min-width: 500px;*/
+}
+
+.nvd3 text {
+    font-family: Droid Sans;
+}
+
+.nvtooltip {
+    font-family: Droid Sans;
+}
+body { display: block;
+margin: 0;}
+
+</style>
+<div id="chart"><svg width="800" height="500"></svg></div>
+<script>
+
+var chart = nv.models.multiBarHorizontalChart()
+.margin({left: 120});
+
+// chart.controlLabels({"stacked":"Stack It","stream":"Stream dat","expanded":"Xpand"})
+// chart.controlLabels({"grouped":"Group em","stacked":"Stack em"})
+
+chart.yAxis     //Chart y-axis settings
+      .axisLabel('Count of answers')
+      .tickFormat(d3.format('f'));
+
+chart.showValues(true).valueFormat(d3.format('f'));
+
+
+d3.select('#chart svg').datum([
+  {
+    key: "Men",
+    color: "#95E1D3",
+    values:
+    [
+      { x : "Working well", y : 66 },
+      { x : "Not working/ broken", y : 11 },
+      { x : "Lost phone", y : 7 }
+    ]
+  },
+  {
+    key: "Women",
+    color: "#F38181",
+    values:
+    [
+      { x : "Working well", y : 56 },
+      { x : "Not working/ broken", y : 17 },
+      { x : "Lost phone", y : 9 }
+    ]
+  }
+]).transition().duration(500).call(chart);
+nv.utils.windowResize(chart.update);
+
+
+</script>

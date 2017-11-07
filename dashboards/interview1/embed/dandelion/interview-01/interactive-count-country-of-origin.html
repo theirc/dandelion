@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Country of origin</title>
+		<link href="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css" rel="stylesheet" />
+		<script src="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+		<style>
+		 @import url(//fonts.googleapis.com/css?family=Lato);
+		body { display: block;
+		margin:auto;
+		}
+		.c3-legend-item, text, .c3-tooltip-container {
+		font-family: Lato;
+		font-size: 13px;
+		color: rgba(0,0,0,.8);
+		fill: rgba(0,0,0,.8);
+		}
+		.c3-tooltip th {
+		background-color: #aaa;
+		font-size: 13px;
+		padding: 2px 5px;
+		text-align: left;
+		color: #FFF;
+		}
+		.c3-line {
+			stroke-width: 2px;
+		}
+		.c3-grid line {
+				/*stroke: indianred !important;*/
+				}
+				.c3 line, .c3 path {
+				stroke: lightgrey;
+				}
+				.tick line{ opacity: 0; }
+
+		#menu {
+			/*display: inline-block;*/
+		    width: 100%;
+		    margin-top: 20px;
+		    text-align: center;
+			font-family: Lato;
+			font-size: 13px;
+			color: rgba(0,0,0,.8);
+		}
+
+		#chart {
+		  width: 100%;
+		  min-height: 350px;
+		}
+
+		@media only screen and (max-width: 500px) {
+			#chart {
+				/*margin-left: -10px;*/
+			}
+			#menu, .c3-legend-item, text, .c3-tooltip-container, .c3-tooltip th, .c3-tooltip td {font-size: 11px}
+		}
+		</style>
+	</head>
+	<body>
+		<div id="chart"><svg></svg></div>
+		<div id="menu">
+			<form method="post" action="" class="form">
+	            <div class="form-item form-checkboxes">
+	                <label class="checkbox"><input name="check" type="radio" onclick="setCount()" checked> Everyone </label>
+	                <label class="checkbox"><input name="check" type="radio" onclick="setSex()"> Grouped by Sex </label>
+	                <label class="checkbox"><input name="check" type="radio" onclick="setStatus()"> Grouped by Status </label>
+	            </div>
+	        </form>
+	    </div>
+		<script>
+			var chart = c3.generate({
+			bindto: d3.select('#chart'),
+			// color: {pattern: ['#9398dd', '#93e4c6', '#68bec5', '#f8c94b', '#f2a74a', '#e380b9']},
+			data: {
+				x: "Country of origin",
+				url: 'data/count-country-of-origin.csv',
+				type: 'bar',
+				colors: {'Count': '#9398dd', 'Female': '#93e4c6', 'Male': '#68bec5', 'Caregiver': '#f8c94b', 'Teacher': '#f2a74a', "Young adult": '#e380b9'},
+				},
+			grid: {
+				focus:{
+				show: false
+				},
+				x: {
+					show: false
+				},
+				y: {
+					show: true,
+
+					}
+				},
+			tooltip: {
+				format: {
+
+				value: d3.format('d')
+				}
+				},
+			axis: {
+				rotated: false,
+				y: {
+					// min: 0, max: 1, padding: 0,
+					tick: {
+						// uncomment below to set values directly (prettier most of the time)
+						// values: [0,50,100,150,200],
+						format: function(d) {return d3.round(d);}, //this wil round the number (1.5 will be rounded to 1)
+						// count: 5,
+				}
+					},
+				x: {
+					type: 'category',
+						label: 	{text: '',
+							position: 'outer-right'
+							},
+						tick: {
+							// width: 70,
+							// rotate: 0,
+
+						},
+					}
+				},
+			legend: {
+				// remove legend interaction
+				item: {
+						 onclick: function () {}
+								        },
+				},
+			padding: {
+
+				// right: 10,
+				// bottom: 30,
+				// left: 70,
+				top: 10
+				},
+		});
+
+function setCount() {
+    chart.load({
+        url: 'data/count-country-of-origin.csv',
+		unload: ['Count', 'Female', 'Male', 'Caregiver', 'Teacher', 'Young adult'],
+    });
+};
+
+function setSex() {
+    chart.load({
+        url: 'data/groupcount-country-of-origin-sex.csv',
+		unload: ['Count', 'Female', 'Male', 'Caregiver', 'Teacher', 'Young adult'],
+    });
+};
+
+function setStatus() {
+    chart.load({
+        url: 'data/groupcount-country-of-origin-2-are-you-a-teacher-caregiver-or-young-adult.csv',
+		unload: ['Count', 'Female', 'Male', 'Caregiver', 'Teacher', 'Young adult'],
+    });
+};
+
+	</script>
+</body>
+</html>

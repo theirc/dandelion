@@ -1,0 +1,29 @@
+{
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "itemLabel": "http://www.wikidata.org/entity/Q618311",
+        "place_of_death": "http://www.wikidata.org/entity/Q727",
+        "place_of_birthLabel": "New York City",
+        "itemDescription": "Dutch sculptor",
+        "place_of_birth": "http://www.wikidata.org/entity/Q60",
+        "place_of_deathLabel": "Amsterdam",
+        "item": "Pearl Perlmuter",
+        "date_time": "2008-05-08",
+        "Category": "Naar Amsterdam gekomen"
+      },
+      "geometry": {
+        "coordinates": [[
+          4.9,
+          52.383333
+        ], [
+		3.8481,
+	          51.5986        ]],
+        "type": "LineString"
+      },
+      "id": "00079c184c2a0ba0541e92fcefdb97aa"
+    }
+  ],
+  "type": "FeatureCollection"
+}

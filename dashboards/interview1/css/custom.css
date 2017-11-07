@@ -1,0 +1,189 @@
+/*Here I set the weird large 64px bottom margin of the first child of the row class to 0*/
+/*Ugly hack. How to not overwrite styles but disable them?*/
+#kube-features .row:first-child { padding-bottom: 32px;
+    margin-bottom: 0px;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.0); }
+
+#kube-features {
+  margin-top: 104px;
+  text-align: center; }
+  #kube-features h3 {
+    margin-top: 0; }
+  #kube-features .row:first-child {
+    padding-bottom: 32px;
+    margin-bottom: 64px;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.15); }
+  #kube-features p {
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.75); }
+  #kube-features .item {
+    padding: 0 24px; }
+
+/*Change color of the thick line above a paragraph in the hero section (initially #ffa00a, orange)*/
+#hero p:before { background: #ffa00a;kube }
+
+#hero h1 {font-weight: 700;}
+
+/*Section margin and background color*/
+/*If I don't put a padding top of 1 pixel here, somehow the 32px margin-top of #hero gets ignored. CSS, man. CSS.*/
+section {margin-bottom: 64px;
+         /*padding-top: 1px;*/
+         padding:.5em;
+         }
+
+section.highlight { background: #f9f8f7 no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    padding:.7em
+    }
+
+/*Styling for blurbs (currently used in the services and about us section)*/
+#blurbs .row:first-child {
+    padding-bottom: 32px;
+    margin-bottom: 64px; }
+
+#blurbs {margin-top: 32px;}
+
+#blurbs img { display: block;
+    margin: auto; }
+
+#blurbs h3 { margin-top:15px;
+  text-align: center; }
+
+#blurbs p { text-align: center;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.75); }
+
+#blurbs .item {
+  padding: 0 24px; }
+
+
+/*Styling for thumbnails (currently used for the portfolio)*/
+#thumbnails .row:first-child {
+    padding-bottom: 32px;
+    margin-bottom: 64px; }
+
+#thumbnails {margin-top: 32px;}
+
+#thumbnails img { display: block;
+    margin: auto;
+    border:1px solid #eee; }
+
+#thumbnails h4 { margin-top:15px;
+  text-align: left; }
+
+#thumbnails p { text-align: left;
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.75); }
+
+figcaption {
+  font-style: italic;
+  opacity: 1; }
+
+/*Change the color of the button text and background (bg initially #ffa00a, orange)*/
+.button { outline: none;
+  text-decoration: none;
+  color: #fff;
+  background-color: #ffa00a; }
+
+.button:hover {
+  outline: none;
+  text-decoration: none;
+  color: #fff;
+  background-color: #ffc66d; }
+
+/*Change the color of the form fields when active (initially #ffa00a, orange)*/
+input:focus, textarea:focus {
+    outline: none !important;
+    border:1px solid #ffa00a;
+    box-shadow: 0 0 0px #719ECE;}
+
+/*Set 'content' class width to 1128px, the same width as the 'main' container of the homepage. The 'content' class is used on the 'Docs' pages.*/
+.content {
+  max-width: 1128px;
+  margin: auto;
+  font-size: 18px;
+  line-height: 28px; }
+
+/*Chart-block*/
+/*#chart-block { background-color: #f9f8f7; }*/
+/* #chart-block h4, #chart-block figcaption {
+ padding: 0 0 1em 1em;
+} */
+
+.chart-block {
+  padding: 1em;
+}
+
+.highlight-chart-block {
+  background-color: #f9f8f7;
+  padding: 1em;
+}
+
+.text-block {
+  padding: 1em;
+}
+
+.highlight-text-block {
+  background-color: #f9f8f7;
+  padding: 1em;
+}
+
+/*Changing the highlight color (to grey initially)*/
+.highlight {
+  background-color: #f9f8f7; }
+
+
+/*Full width background color div wrappers*/
+  html,body {
+  overflow-x: hidden; /* Prevent scrollbar */
+}
+
+.chapter {
+  border-top: solid 1px #dedede;
+  padding-top: 3em;
+}
+
+/*This adds a 'external link' icon after a link*/
+/*.ext_link:after {
+  content: "\f08e";
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-size:.65em;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: none;
+  padding-left: .4em;
+};*/
+
+td:first-child, th:first-child {
+       padding: 3px 6px;
+}
+ td:last-child, th:last-child {
+    padding: 3px 6px;
+}
+
+/* Hide blogpost time for now > Remove this after switching to own content type */
+time { display: none;}
+
+.h2, h2 {
+  font-size: 36px;
+  line-height: 40px;
+  margin-bottom: 40px;
+  text-align: center;
+}
+@media only screen and (max-width: 500px) {
+  #main {
+    padding: 1px;
+  }
+  .chart-block, .text-block {
+    padding: 5px;
+  }
+}
+
+@media only screen and (min-width: 400px) {
+  #thumbnails .thumbnail { height: 211px}
+  #thumbnails .item { margin-top: 30px}
+}

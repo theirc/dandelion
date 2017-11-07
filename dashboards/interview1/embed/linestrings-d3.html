@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang=en>
+<head>
+<meta charset=utf-8>
+<title>Amsterdam</title>
+<script type="text/javascript" src="http://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+<script>
+    var svg = d3.select("body")
+    .append("svg")
+    .attr("width",500)
+    .attr("height",500);
+
+var path = svg.append("path")
+   .attr("d","M 100 350 l 150 -300")
+   .attr("fill","none")
+   .attr("stroke","black");
+
+var circle = svg.append("circle")
+   .attr("r",5)
+   .attr("cx",100)
+   .attr("cy",350);
+
+var pathEl = path.node();
+for(var i=0;i<pathEl.getTotalLength();i++){
+    var pt = pathEl.getPointAtLength(i);
+    circle.transition()
+        .duration(3500)
+        .attr("cx",pt.x)
+        .attr("cy",pt.y);
+}
+</script>
+<p>I'm the content</p>
+</body>
+</html>
