@@ -1,8 +1,12 @@
-<section class="page-header">
-  <h1 class="project-name">{{ site.title | default: site.github.repository_name }}</h1>
-  <h2 class="project-tagline">{{ site.description | default: site.github.project_tagline }}</h2>
-  {% if site.github.is_project_page %}
-    <a href="{{ site.github.repository_url }}" class="btn">See GitHub Page</a>
-    <a href="{{ site.github.repository_url }}/issues" class="btn">File an Issue</a>
-  {% endif %}
-</section>
+<header class="site-header">
+  <a class="site-title" href="{{ site.baseurl }}/"><h1>Project Dandelion</h1></a>
+  <nav class="navbar">
+    <ul>
+      <li class="nav-item"><a href="{{ site.baseurl }}/">Home</a></li>
+      <li class="nav-item"><a href="{{ site.baseurl }}/about/">About</a></li>
+      <li class="nav-item"><a href="{{ site.github.repository_url }}">Github</a></li>
+      <li class="nav-item"><a href="{{ site.github.repository_url }}/issues">File an Issue</a></li>
+    </ul>
+  </nav>
+
+</header>

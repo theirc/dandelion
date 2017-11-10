@@ -1,69 +1,22 @@
 <!DOCTYPE html>
-<html lang="{{ site.lang | default: "en-US" }}">
-  <head>
-    <meta charset="UTF-8">
-    <title>{% if page.title %}{{ page.title }} | {% endif %}{{ site.title | default: site.github.repository_name }} by {{ site.github.owner_name }}</title>
-    <meta name="description" content="{{ page.description | default: site.description | default: site.github.project_tagline }}"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#157878">
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
-  </head>
+<html>
+
+  {% include head.html %}
+
   <body>
-    {% include header.html %}
 
-    <section class="main-content">
-      {{ content }}
-
-
-      <h3> Introduction </h3>
-Hello! Welcome to this web page about Project Dandelion. Here you can find the latest documents and milestones. If you are interested in helping, please get in touch.
-
-      <h3> What is Project Dandelion </h3>
-<p>      
-Project Dandelion is an education product designed to prepare primary-school aged refugee children for greater cognitive, social, emotional and academic success through the development of social-emotional learning (SEL) skills.
-</p>
-<p>
-Project Dandelion ia based on a whole-community approach to well-being & learning for refugee children. IRC education and R&D specialists started working on Dandelion in 2016. We are currently prototyping and testing Dandelion with communities in Nyarugusu refugee camp, Tanzania. Learn more about our work <a href="https://www.rescue.org/airbel-center"> here </a>. 
-</p>
+    <main class="wrapper">
       
-      <h3> Useful and latest documents </h3>
-      
-       <ul> 
-      <li>  <a href="https://docs.google.com/presentation/d/1xAB-chRtH7yDZYnIB4wteNTA6Bg73E3EGhm-uvKfZWY/edit?usp=sharing"> New ideas for Graine and Spark,  October 2017 </a> </li>
-      <li>  <a href="https://docs.google.com/presentation/d/1NGkkGzVKhPbRwZypHfd5OpYWZNLqu0YrEqLBUA1Fem0/edit?usp=sharing"> Field Report from Prototyping Sprint #1,  September 2017 (Short version) </a> </li>
-      <li>  <a href="https://docs.google.com/presentation/d/1PFT7NhdUTPICA1N1z_FePosWZcC9tf4v51cOLLQZYaQ/edit?usp=sharing"> Field Report from Prototyping Sprint #1,  September 2017 (Long version) </a> </li>
-         
+      {% include header.html %}
 
-       </ul>
-      
-      <h3> Archive documents </h3>
-      <ul>
-      <li>  <a href="https://docs.google.com/presentation/d/1fGaALulK7mndt273WQ91YH9HK3OrvnsptHQ2HVwSxCo/edit?usp=sharing"> Overview and approach to prototyping, August 2017 </a> </li> 
-            <li>  <a href="https://docs.google.com/presentation/d/11BgROyeG5LeNzI_aOyrfxRFJfXFPDbUWxx-s75gxNUc/edit?usp=sharing"> Hekima Prototyping plan, September 2017 </a> </li>
-            <li>  <a href="https://docs.google.com/presentation/d/1gYoLCsRhgDHnyRdp7R8IWWCtmPmuS2XmZpMfuvunfuE/edit?usp=sharing"> Graine Prototyping plan, September 2017 </a> </li> 
-            <li>  <a href="https://docs.google.com/presentation/d/1j8lVRwCDe468Ak8GkhpKDiBT3EPkHKJlQEVmLlZ5jE8/edit?usp=sharing"> Spark Prototyping plan, September 2017 </a> </li> 
-      <li>  <a href="https://docs.google.com/document/d/1zwd5hLbtIU84QLclauvrawK87TXwGmPMPb08wPCS0s4/edit?usp=sharing"> Product requirement and project plan, June 2017 </a> </li>
-      <li>  <a href="https://rescue.app.box.com/file/78239629505"> Design research and opportunities, 2016 </a> </li>
+      <div class="container">
+        {{ content }}
 
-       </ul>
-
-      <h3> Team and Contacts </h3>
-Reach out to the Airbel Team at airbel@rescue.org or Laura de Reynal at laura.dereynal@rescue.org
-      
-      {% include footer.html %}
-    </section>
-
-    {% if site.google_analytics %}
-      <script type="text/javascript">
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', '{{ site.google_analytics }}', 'auto');
-        ga('send', 'pageview');
-      </script>
-    {% endif %}
+        {% include footer.html %}
+      </div>
+    
+    </main>
+    
   </body>
+
 </html>
