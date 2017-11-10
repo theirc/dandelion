@@ -4,7 +4,7 @@ email: laura.dereynal@rescue.org
 description: > # this means to ignore newlines until "baseurl:"
   Project Dandelion is a project inside the Airbel lab at the International Rescue Committee.
 
-baseurl: "/dandelion" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://dandelion.today/" # the base hostname & protocol for your site
 twitter_username: lau_nk
 github_username:  lauradereynal
