@@ -1,0 +1,27 @@
+source,target,value,Score,Color code
+Vietnam,Russia,100,10,#ef6548
+Panama,US,200,10,#1a9641
+Iceland,Russia,200,10,#ef6548
+Thailand,Russia,500,10,#ef6548
+Congo,Russia,300,10,#ef6548
+Kenia,US,150,10,#1a9641
+France,US,500,10,#1a9641
+Belgium,US,400,10,#1a9641
+Russia,Crimea,55,10,#ef6548
+Russia,Siberia,125,10,#ef6548
+Russia,Chechnya,400,10,#ef6548
+US,Midwest,50,10,#1a9641
+US,California,300,10,#1a9641
+US,New York,400,10,#1a9641
+US,Texas,100,10,#1a9641
+New York,Brooklyn,125,10,#1a9641
+New York,Queens,20,10,#1a9641
+New York,Long Island,55,10,#1a9641
+New York,Manhattan,200,10,#1a9641
+Chechnya,Grozny,25,10,#ef6548
+Chechnya,Naskhish,60,10,#ef6548
+Crimea,Asia,55,10,#ef6548
+Siberia,Asia,125,10,#ef6548
+Midwest,North America,50,10,#1a9641
+California,North America,300,10,#1a9641
+Texas,North America,100,10,#1a9641

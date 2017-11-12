@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Fake Q2</title>
+		<link href="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css" rel="stylesheet" />
+		<script src="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+		<style>
+		@import url(//fonts.googleapis.com/css?family=Lato);
+		body { display: block;
+		margin:auto;
+		}
+		.c3-legend-item, text, .c3-tooltip-container {
+		font-family: Lato;
+		font-size: 13px;
+		color: rgba(0,0,0,.6);
+		fill: rgba(0,0,0,.6);
+		}
+		.c3-tooltip th {
+		background-color: #aaa;
+		font-size: 13px;
+		padding: 2px 5px;
+		text-align: left;
+		color: #FFF;
+		}
+		.c3-line {
+			stroke-width: 2px;
+		}
+		.c3-grid line {
+				/*stroke: indianred !important;*/
+				}
+				.c3 line, .c3 path {
+				stroke: lightgrey;
+				}
+				.tick line{ opacity: 0; }
+		</style>
+	</head>
+	<body>
+		<div id="chart"><svg></svg></div>
+		<script>
+			var chart = c3.generate({
+			bindto: d3.select('#chart'),
+			data: {
+				columns: [['Control',8,14,10,47],['Intervention',12,26,19,9],],
+			    type: 'bar',
+			colors: {'Intervention': '#e380b9', 'Control': '#68bec5'},
+				},
+			grid: {
+				focus:{
+				show: false
+				},
+				x: {
+					show: false
+				},
+				y: {
+					show: true,
+					
+					}
+				},
+			tooltip: {
+				format: {
+				
+				value: d3.format(",d")
+				}
+				},
+			axis: {
+				rotated: true,
+				y: {
+					min: 0, max: 50, padding: 0,
+					tick: {
+							// values: [0,20,40,60,80,100],
+							// format: d3.format(",d"),
+							// count: 5,
+
+						}
+					},
+				x: {
+					type: 'category',
+					categories: ['Often', 'Sometimes', 'Rarely', "Never"],
+                    height: 100,
+						label: 	{text: '',
+							position: 'outer-right'
+							},
+						tick: {
+							width: 200,
+							
+							
+							rotate: -45,
+							
+						},
+					}
+				},
+			legend: {
+				// remove legend interaction
+				item: {
+				            onclick: function () {}
+				        },
+				// padding: 35,
+				},
+			padding: {
+				left: 75
+				}
+		});
+	</script>
+</body>
+</html>

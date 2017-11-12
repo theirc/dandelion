@@ -1,0 +1,164 @@
+<!-- Rather ugly experiment with changing data. We're using zoom instead, if we want to show different parts of the same chart -->
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>IMF Forecasts - Growth Comparison (World) - Same Year - Filtered</title>
+		<link href="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css" rel="stylesheet" />
+		<script src="//cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+		<script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.js"></script>
+		<link href="/css/font.css" rel="stylesheet" type="text/css">
+
+	  <link href="/css/kube.min.css" rel="stylesheet" type="text/css">
+	  <link href="/css/kube.legenda.css" rel="stylesheet" type="text/css">
+	  <link href="/css/highlight.css" rel="stylesheet" type="text/css">
+	  <link href="/css/master.css" rel="stylesheet" type="text/css">
+	  <link href="/css/kube.demo.css" rel="stylesheet" type="text/css">
+
+	 <link href="/css/custom.css" rel="stylesheet" type="text/css">
+
+	  <script src="/js/jquery-2.1.4.min.js" type="text/javascript">
+	  </script>
+		<style>
+		@import url(//fonts.googleapis.com/css?family=Lato);
+		body { display: block;
+		margin:auto;
+		}
+		p, .c3-legend-item, text, .c3-tooltip-container {
+		font-family: Lato;
+		font-size: 13px;
+		color: rgba(0,0,0,.6);
+		fill: rgba(0,0,0,.6);
+		}
+		.c3-tooltip th {
+		background-color: #aaa;
+		font-size: 13px;
+		padding: 2px 5px;
+		text-align: left;
+		color: #FFF;
+		}
+		.c3-line {
+			stroke-width: 2px;
+		}
+		.c3-grid line {
+				stroke: grey !important;
+				opacity: 0.3 !important;
+				}
+				.c3 line, .c3 path {
+				stroke: lightgrey;
+				}
+				.tick line{ opacity: 0; }
+		</style>
+	</head>
+	<body class="page-kube">
+		<div id="main">
+	<!-- <p><button class="button outline centered" onclick="toggleMe();">Switch view</button></p> -->
+		<br>
+		<p><button class="button outline centered" onclick="toggleMe();">Show 1996–2002</button>
+		<button class="button outline centered" onclick="toggleMe();">Show 2006–2010</button></p>
+		<div id="chart"><svg></svg></div>
+		<script>
+			var chart = c3.generate({
+			bindto: d3.select('#chart'),
+			data: {
+				x: 'Date',
+				columns: [['Date', '1996-03-20', '1996-09-22', '1997-03-20', '1997-09-22', '1998-03-20', '1998-09-22', '1999-03-20', '1999-09-22', '2000-03-20', '2000-09-22', '2001-03-20', '2001-09-22', '2002-03-20', '2002-09-22'],['Forecast same year', 0.038208201246300005, 0.0384976658781, 0.0436936766465, 0.0422781700215, 0.0307822339182, 0.019934288352, 0.0231328314388, 0.029852122319499998, 0.0418350595451, 0.0474371116761, 0.031730872184900005, 0.0260392576803, 0.0283585700417, 0.027625437571900002],['Real GDP growth', 0.0409653988153, 0.0418990714081, 0.0415693078325, 0.041605389358599996, 0.0250123864899, 0.0261383287054, 0.0350492314425, 0.0357871124744, 0.047066049648400006, 0.0466747694978, 0.0229738323263, 0.0239012580712, 0.0296827262098, 0.029723401010099997],],
+				type: 'spline',
+				colors: {'Forecast same year': '#3690c0', 'Real GDP growth': '#de2d26'}
+				},
+			point: {
+				r: 1
+				},
+			grid: {
+				focus:{
+				show: false
+				},
+				x: {
+					show: false
+				},
+				y: {
+					show: false,
+					lines: [{value: 0, text: ''}]
+					}
+				},
+			tooltip: {
+				format: {
+				title: d3.time.format("%Y-%m"),
+				value: d3.format('.2p')
+				}
+				},
+			axis: {
+				y: {
+					min: -0.02, max: 0.05,
+					tick: {
+							// values: [-0.02, 0.00, 0.02, 0.04, 0.06],
+							format: d3.format('p'),
+							culling: {
+						max: 4
+							}
+						},
+				},
+				x: {
+					type: 'timeseries',
+
+						label: 	{text: '',
+							position: 'outer-right'
+							},
+						tick: {
+							// values: ['1990-01-01', '2000-01-01', '2010-01-01', '2020-01-01'],
+					format: '%Y',
+					culling: {
+				max: 5
+							}
+						}
+					}
+				},
+			legend: {
+				// remove legend interaction
+				item: {
+				            onclick: function () {}
+				        },
+				padding: 25,
+				},
+			padding: {
+				right: 30
+				}
+		});
+
+	var toggle_Status = false;
+
+	function view1(){
+	toggle_Status = false;
+	chart.load({
+		unload: ['Forecast same year', 'Real GDP growth'],
+		columns: [['Date', '1996-03-20', '1996-09-22', '1997-03-20', '1997-09-22', '1998-03-20', '1998-09-22', '1999-03-20', '1999-09-22', '2000-03-20', '2000-09-22', '2001-03-20', '2001-09-22', '2002-03-20', '2002-09-22'],['Forecast same year', 0.038208201246300005, 0.0384976658781, 0.0436936766465, 0.0422781700215, 0.0307822339182, 0.019934288352, 0.0231328314388, 0.029852122319499998, 0.0418350595451, 0.0474371116761, 0.031730872184900005, 0.0260392576803, 0.0283585700417, 0.027625437571900002],['Real GDP growth', 0.0409653988153, 0.0418990714081, 0.0415693078325, 0.041605389358599996, 0.0250123864899, 0.0261383287054, 0.0350492314425, 0.0357871124744, 0.047066049648400006, 0.0466747694978, 0.0229738323263, 0.0239012580712, 0.0296827262098, 0.029723401010099997],],
+	});
+	}
+	function view2(){
+	toggle_Status = true;
+	chart.load({
+		unload: ['Forecast same year', 'Real GDP growth'],
+		columns: [
+		['Date', '2006-03-20', '2006-09-22', '2007-03-20', '2007-09-22', '2008-03-20', '2008-09-22', '2009-03-20', '2009-09-22', '2010-03-20'],
+		['Forecast same year', 0.048845174968999996, 0.0514941056886, 0.0493664960257, 0.052314186320400004, 0.037340486043800004, 0.0391025132796, -0.013189839481600001, -0.0105892285748, 0.04216936782459999],
+		['Real GDP growth', 0.050187236316099997, 0.05086881317869999, 0.051533333002800004, 0.0516576942759, 0.0302142805835, 0.0283376173111, -0.005235987560399999, -0.006631843040399999, 0.0526516805989],],
+	});
+	}
+
+
+
+	function toggleMe() {
+      toggle_Status ? view1() : view2();
+    }
+
+
+     	</script>
+
+
+
+</div>
+</body>
+</html>
+

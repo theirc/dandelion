@@ -1,0 +1,78 @@
+source,target,Score,value,full_source_name,full_target_name
+ALDE,Art 11,2.75,68,Group of the Alliance of Liberals and Democrats for Europe,Publishers Right
+ALDE,Art 13,3.88,68,Group of the Alliance of Liberals and Democrats for Europe,Upload Filters for Online Platforms
+ALDE,Art 3,-9.29,68,Group of the Alliance of Liberals and Democrats for Europe,Text and Data Mining
+ALDE,Art 4,-3.13,68,Group of the Alliance of Liberals and Democrats for Europe,Education Exception
+ALDE,Art 5,-5.00,68,Group of the Alliance of Liberals and Democrats for Europe,Preservation Exception
+ALDE,FOP,5.00,68,Group of the Alliance of Liberals and Democrats for Europe,Freedom of Panorama Exception
+ALDE,UGC,-10.00,68,Group of the Alliance of Liberals and Democrats for Europe,User Generated Content Exception
+ECR,Art 11,-4.58,72,European Conservatives and Reformists Group,Publishers Right
+ECR,Art 13,-10.00,72,European Conservatives and Reformists Group,Upload Filters for Online Platforms
+ECR,Art 3,-7.50,72,European Conservatives and Reformists Group,Text and Data Mining
+ECR,Art 4,7.50,72,European Conservatives and Reformists Group,Education Exception
+ECR,Art 5,0.00,72,European Conservatives and Reformists Group,Preservation Exception
+ECR,Art 7-9,5.00,72,European Conservatives and Reformists Group,Access to Out of Commerce Works
+EFDD,Art 11,9.43,41,Europe of Freedom and Direct Democracy Group,Publishers Right
+EFDD,Art 13,10.00,41,Europe of Freedom and Direct Democracy Group,Upload Filters for Online Platforms
+EFDD,Art 3,-4.29,41,Europe of Freedom and Direct Democracy Group,Text and Data Mining
+EFDD,Art 4,7.50,41,Europe of Freedom and Direct Democracy Group,Education Exception
+EFDD,Art 5,9.00,41,Europe of Freedom and Direct Democracy Group,Preservation Exception
+EFDD,Art 7-9,5.29,41,Europe of Freedom and Direct Democracy Group,Access to Out of Commerce Works
+ENF,Art 11,-5.00,40,Europe of Nations and Freedom Group,Publishers Right
+ENF,Art 3,-10.00,40,Europe of Nations and Freedom Group,Text and Data Mining
+ENF,Art 4,-8.75,40,Europe of Nations and Freedom Group,Education Exception
+ENF,Art 5,-10.00,40,Europe of Nations and Freedom Group,Preservation Exception
+ENF,Art 7-9,-10.00,40,Europe of Nations and Freedom Group,Access to Out of Commerce Works
+EPP,Art 11,-4.04,214,Group of the European People's Party (Christian Democrats),Publishers Right
+EPP,Art 13,-5.56,214,Group of the European People's Party (Christian Democrats),Upload Filters for Online Platforms
+EPP,Art 3,-9.00,214,Group of the European People's Party (Christian Democrats),Text and Data Mining
+EPP,Art 4,0.79,214,Group of the European People's Party (Christian Democrats),Education Exception
+EPP,Art 5,5.00,214,Group of the European People's Party (Christian Democrats),Preservation Exception
+EPP,Art 7-9,8.57,214,Group of the European People's Party (Christian Democrats),Access to Out of Commerce Works
+Greens–EFA,Art 11,10.00,51,Group of the Greens/European Free Alliance,Publishers Right
+Greens–EFA,Art 13,7.50,51,Group of the Greens/European Free Alliance,Upload Filters for Online Platforms
+Greens–EFA,Art 3,10.00,51,Group of the Greens/European Free Alliance,Text and Data Mining
+Greens–EFA,Art 4,10.00,51,Group of the Greens/European Free Alliance,Education Exception
+Greens–EFA,Art 5,9.29,51,Group of the Greens/European Free Alliance,Preservation Exception
+Greens–EFA,Art 7-9,10.00,51,Group of the Greens/European Free Alliance,Access to Out of Commerce Works
+Greens–EFA,FOP,10.00,51,Group of the Greens/European Free Alliance,Freedom of Panorama Exception
+Greens–EFA,UGC,10.00,51,Group of the Greens/European Free Alliance,User Generated Content Exception
+GUE-NGL,Art 11,10.00,52,Confederal Group of the European United Left - Nordic Green Left,Publishers Right
+GUE-NGL,Art 13,10.00,52,Confederal Group of the European United Left - Nordic Green Left,Upload Filters for Online Platforms
+GUE-NGL,Art 3,1.54,52,Confederal Group of the European United Left - Nordic Green Left,Text and Data Mining
+GUE-NGL,Art 4,8.33,52,Confederal Group of the European United Left - Nordic Green Left,Education Exception
+GUE-NGL,Art 5,8.33,52,Confederal Group of the European United Left - Nordic Green Left,Preservation Exception
+GUE-NGL,Art 7-9,-5.00,52,Confederal Group of the European United Left - Nordic Green Left,Access to Out of Commerce Works
+GUE-NGL,FOP,10.00,52,Confederal Group of the European United Left - Nordic Green Left,Freedom of Panorama Exception
+S&D,Art 11,2.05,189,Group of the Progressive Alliance of Socialists and Democrats in the European Parliament,Publishers Right
+S&D,Art 13,1.17,189,Group of the Progressive Alliance of Socialists and Democrats in the European Parliament,Upload Filters for Online Platforms
+S&D,Art 3,3.19,189,Group of the Progressive Alliance of Socialists and Democrats in the European Parliament,Text and Data Mining
+S&D,Art 4,-0.42,189,Group of the Progressive Alliance of Socialists and Democrats in the European Parliament,Education Exception
+S&D,Art 5,5.38,189,Group of the Progressive Alliance of Socialists and Democrats in the European Parliament,Preservation Exception
+S&D,Art 7-9,-5.96,189,Group of the Progressive Alliance of Socialists and Democrats in the European Parliament,Access to Out of Commerce Works
+S&D,FOP,10.00,189,Group of the Progressive Alliance of Socialists and Democrats in the European Parliament,Freedom of Panorama Exception
+S&D,UGC,10.00,189,Group of the Progressive Alliance of Socialists and Democrats in the European Parliament,User Generated Content Exception
+CULT,Art 3,-5.00,40,Culture and Education Committee,Text and Data Mining
+CULT,Art 4,-10.00,40,Culture and Education Committee,Education Exception
+CULT,Art 5,2.00,40,Culture and Education Committee,Preservation Exception
+CULT,Art 7-9,2.00,40,Culture and Education Committee,Access to Out of Commerce Works
+CULT,Art 11,-10.00,40,Culture and Education Committee,Publishers Right
+CULT,Art 13,-10.00,40,Culture and Education Committee,Upload Filters for Online Platforms
+CULT,UGC,5.00,40,Culture and Education Committee,User Generated Content Exception
+CULT,FOP,-10.00,40,Culture and Education Committee,Freedom of Panorama Exception
+IMCO,Art 3,-4.00,40,Internal Market and Consumer Protection Committee,Text and Data Mining
+IMCO,Art 4,6.00,40,Internal Market and Consumer Protection Committee,Education Exception
+IMCO,Art 5,10.00,40,Internal Market and Consumer Protection Committee,Preservation Exception
+IMCO,Art 7-9,8.00,40,Internal Market and Consumer Protection Committee,Access to Out of Commerce Works
+IMCO,Art 11,-7.00,40,Internal Market and Consumer Protection Committee,Publishers Right
+IMCO,Art 13,5.00,40,Internal Market and Consumer Protection Committee,Upload Filters for Online Platforms
+IMCO,UGC,10.00,40,Internal Market and Consumer Protection Committee,User Generated Content Exception
+IMCO,FOP,10.00,40,Internal Market and Consumer Protection Committee,Freedom of Panorama Exception
+ITRE,Art 3,0.00,40,"Industry, Research and Energy Committee",Text and Data Mining
+ITRE,Art 4,-2.00,40,"Industry, Research and Energy Committee",Education Exception
+ITRE,Art 5,5.00,40,"Industry, Research and Energy Committee",Preservation Exception
+ITRE,Art 7-9,5.00,40,"Industry, Research and Energy Committee",Access to Out of Commerce Works
+ITRE,Art 11,-10.00,40,"Industry, Research and Energy Committee",Publishers Right
+ITRE,Art 13,2.00,40,"Industry, Research and Energy Committee",Upload Filters for Online Platforms
+ITRE,UGC,-5.00,40,"Industry, Research and Energy Committee",User Generated Content Exception
+ITRE,FOP,-5.00,40,"Industry, Research and Energy Committee",Freedom of Panorama Exception

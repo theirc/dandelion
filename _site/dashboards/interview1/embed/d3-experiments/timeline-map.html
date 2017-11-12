@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+        @import url(//fonts.googleapis.com/css?family=Droid+Sans|Droid+Sans+Mono|Oxygen);
+
+    body { display: block;
+            margin: auto;
+            max-width: 900px;
+        }
+      
+  .legend{
+    /*font-weight: bold;*/
+  }
+
+  .names {
+    fill: none;
+    stroke: #fff;
+    stroke-linejoin: round;
+  }
+
+  /* Tooltip CSS */
+  .d3-tip, text {
+    line-height: 1.5;
+    font-family: Oxygen, sans-serif;
+    font-size: 12px;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #FFF;
+    border-radius: 1px;
+    pointer-events: none;
+  }
+
+
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 568px) {
+    .d3-tip, text {
+    line-height: 1.1;
+    font-family: Oxygen, sans-serif;
+    font-size: 8px;
+    padding: 6px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #FFF;
+    border-radius: 1px;
+    pointer-events: none;
+  }
+}
+
+
+  /*
+  text{
+    pointer-events:none;
+  }
+  */
+
+  .details{
+    color: white;
+  }
+</style>
+<body>
+<script src="//d3js.org/d3.v4.min.js"></script>
+<script src="//d3js.org/queue.v1.min.js"></script>
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script src="//d3js.org/d3-geo-projection.v1.min.js"></script>
+<script src="d3-tip.js"></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/simple-statistics/1.0.1/simple_statistics.js'></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.11.0/d3-legend.min.js"></script>
+<script>
+
+// configuration
+var colorVariable = 'cijfer';
+var geoIDVariable = 'id';
+var format = d3.format('d');
+
+// Set tooltips
+var tip = d3.tip().attr('class', 'd3-tip').offset([-10, 0]).html(function (d) {
+  return '<strong>Country: </strong><span class=\'details\'>' + d.properties.name + '<br></span><strong>Percentage online: </strong><span class=\'details\'>' + format(d[colorVariable]) + '</span>';
+});
+
+
+
+d3.select('body').style('overflow', 'hidden');
+
+var parentWidth = d3.select('body').node().getBoundingClientRect().width;
+var margin = { top: 0, right: 0, bottom: 0, left: 0 };
+var width = parseInt(d3.select('body').style('width')) - margin.left - margin.right;
+var mapRatio = .5
+var height = width * mapRatio
+
+// var color = d3.scaleQuantile().range(['rgb(247,251,255)', 'rgb(222,235,247)', 'rgb(198,219,239)', 'rgb(158,202,225)', 'rgb(107,174,214)', 'rgb(66,146,198)', 'rgb(33,113,181)', 'rgb(8,81,156)', 'rgb(8,48,107)', 'rgb(3,19,43)']);
+var color = d3.scaleQuantile().range(['rgb(239,243,255)','rgb(198,219,239)','rgb(158,202,225)','rgb(107,174,214)','rgb(66,146,198)','rgb(33,113,181)','rgb(8,69,148)']);
+
+
+var svg = d3.select('body').append('svg').attr('width', width).attr('height', height).append('g').attr('class', 'map');
+
+// var projection = d3.geoEquirectangular().scale(width / 6.5).rotate([352, 0, 0]).translate([width / 2, height / 2]);
+var projection = d3.geoMercator()
+          .scale(100000)
+          .center([4.9, 52.36]) 
+          .translate([width / 2, (height / 2) + 30]); 
+
+
+var path = d3.geoPath().projection(projection);
+
+svg.call(tip);
+
+queue().defer(d3.json, 'amsterdam.geojson').defer(d3.csv, 'amsdata.csv').await(ready);
+
+function ready(error, geography, data) {
+  data.forEach(function (d) {
+    d[colorVariable] = Number(d[colorVariable].replace(',', ''));
+  });
+
+  var colorVariableValueByID = {};
+
+  data.forEach(function (d) {
+    colorVariableValueByID[d[geoIDVariable]] = d[colorVariable];
+  });
+  geography.features.forEach(function (d) {
+    d[colorVariable] = colorVariableValueByID[d.name];
+  });
+
+  // calculate ckmeans clusters
+  // then use the max value of each cluster
+  // as a break
+  var numberOfClasses = color.range().length - 1;
+  var ckmeansClusters = ss.ckmeans(data.map(function (d) {
+    return d[colorVariable];
+  }), numberOfClasses);
+  var ckmeansBreaks = ckmeansClusters.map(function (d) {
+    return d3.min(d);
+  });
+
+
+  // set the domain of the color scale based on our data
+  color.domain(ckmeansBreaks);
+
+
+//  use the above for the legend
+
+
+var quantize = color.domain(ckmeansBreaks);
+
+
+  svg.append('g').attr('class', 'countries').selectAll('path').data(geography.features).enter().append('path').attr('vector-effect', 'non-scaling-stroke').attr('d', path).style('fill', function (d) {
+    if (typeof colorVariableValueByID[d.id] !== 'undefined') {
+      return color(colorVariableValueByID[d.id]);
+    }
+    return 'white';
+  }).style('fill-opacity', 0.8).style('stroke', function (d) {
+    if (d[colorVariable] !== 0) {
+      return 'black';
+    }
+    return 'lightgray';
+  }).style('stroke-width', 1).style('stroke-opacity', 0.5)
+  // tooltips
+  .on('mouseover', function (d) {
+    tip.show(d);
+    d3.select(this).style('fill-opacity', 1).style('stroke-opacity', 1).style('stroke-width', 1);
+  }).on('mouseout', function (d) {
+    tip.hide(d);
+    d3.select(this).style('fill-opacity', 0.8).style('stroke-opacity', 0.5).style('stroke-width', 1);
+  });
+
+  svg.append('path').datum(topojson.mesh(geography.features, function (a, b) {
+    return a.id !== b.id;
+  })).attr('class', 'names').attr('d', path);
+
+
+
+// The legend
+  svg.append("g")
+    .attr("class", "legend")
+    .attr("transform", "translate(" + (width * 0.05) + "," + (height * 0.55) + ") scale(" + (width * 0.0015) + ")")
+
+
+  var legend = d3.legendColor()
+    .labelFormat(d3.format("d"))
+    .orient('vertical')
+    // .shapeWidth(width / 8)
+    // .titleWidth(50)
+    .shapePadding(0)
+    // .title('Internet Penetration')
+    .labelAlign("start")
+    .scale(quantize);
+
+
+
+
+  svg.select(".legend").call(legend);
+
+}
+
+</script>
+</body>
+</html>

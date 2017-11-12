@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7/leaflet.css" />
+    <script src="http://d3js.org/d3.v3.min.js" type="text/javascript"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7/leaflet.js"></script>
+    <script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.4/mapbox.css' rel='stylesheet' />
+    <style>
+    html,
+    body {
+        height: 100%;
+        width: 100%;
+    }
+    body {
+        margin: 0;
+    }
+    #map {
+        width: 100%;
+        height: 100%;
+    }
+    svg {
+        position: relative;
+    }
+    path {
+        fill: none;
+        stroke-width: 4px;
+        stroke: black;
+        stroke-opacity: 0.5;
+    }
+    path.true {
+        stroke: #3366FF;
+    }
+    path.false {
+        stroke: #990099;
+    }
+    circle {
+        fill: yellow;
+        opacity: 0.75;
+    }
+    .area {
+        fill: #3366FF;
+    }
+    .empty {
+        fill: #990099;
+    }
+    </style>
+</head>
+
+<body>
+
+    <div id="demo"></div>
+    <div id="map"></div>
+    <script type="text/javascript">
+    
+    var mapboxTiles = L.tileLayer('https://{s}.tiles.mapbox.com/v3/examples.map-zr0njcqy/{z}/{x}/{y}.png', {
+        attribution: '<a href="http://www.mapbox.com/about/maps/" target="_blank">Terms &amp; Feedback</a>'
+    });
+
+
+    var map = L.map('map')
+        .addLayer(mapboxTiles)
+        .setView([40.72332345541449, -74.00390625], 10);
+
+
+    // we will be appending the SVG to the Leaflet map pane
+    // g (group) element will be inside the svg and it
+    svg = d3.select(map.getPanes().overlayPane).append("svg"),
+
+    // if you don't include the leaflet-zoom-hide when a 
+    // user zooms in or out you will still see the phantom
+    // original SVG 
+    g = svg.append("g").attr("class", "leaflet-zoom-hide");
+
+
+    //read in the GeoJSON. This function is asynchronous so
+    // anything that needs the json file should be within
+    d3.json("linestring2.json", function(collection) {
+
+        //stream transform. transforms geometry before passing it to
+        // listener. Can be used in conjunction with d3.geo.path
+        // to implement the transform. In this case the transform
+
+        var transform = d3.geo.transform({
+            point: projectPoint
+        });
+
+        //d3.geo.path translates GeoJSON to SVG path codes.
+        //essentially a path generator. In this case it's
+        // a path generator referencing our custom "projection"
+        // which is the Leaflet method latLngToLayerPoint inside
+        // our function called projectPoint
+        var d3path = d3.geo.path().projection(transform);
+
+        //essentially we're appending our features to the
+        // group element. We're adding a class with the line name
+        // and we're making them invisible
+        var lineFeatures = g.selectAll("path")
+            .data(collection.features)
+            .enter()
+            .append("path")
+            .attr("class", function(d) {
+                return d.properties.name
+
+            })
+            .attr("style", "opacity:0.5");
+
+        // this is going to be the circle that tracks the
+        // route, we're appending it to the g element
+        var marker = g.append("circle");
+        marker.attr("r", 10)
+            .attr("id", "marker");
+
+
+        // for now we're selecting just one of the lines. And
+        // on this one line we're invoking (with the selection.call)
+        // our transition function. Using callis the same as invoking
+        // the function by hand but makes it easier to use method
+        // chaining.
+        var path = svg.select("path.line0")
+            .attr("style", "opacity:1")
+            .call(transition);
+
+
+  
+
+        // when the user zooms in or out you need to reset
+        // the view
+        map.on("viewreset", reset);
+
+        // this puts stuff on the map! Without this "path"
+        // only exists in theory
+        reset();
+
+             var startPoint = pathStartPoint(path);
+         marker.attr("transform", "translate(" + startPoint[0] + "," + startPoint[1] + ")");
+
+
+     // Reposition the SVG to cover the features.
+        function reset() {
+            var bounds = d3path.bounds(collection),
+                topLeft = bounds[0],
+                bottomRight = bounds[1];
+     
+            // here you're setting some styles, width, heigh etc
+            // to the SVG. Note that we're adding a little height and
+            // width because otherwise the bounding box would perfectly
+            // cover our features BUT... since you might be using a big
+            // circle to represent a 1 dimensional point, the circle
+            // might get cut off.
+
+
+
+        svg.attr("width", bottomRight[0] - topLeft[0] + 100)
+            .attr("height", bottomRight[1] - topLeft[1] + 100)
+            .style("left", topLeft[0] - 50 + "px")
+            .style("top", topLeft[1] - 50 + "px");
+
+
+        lineFeatures.attr("d", d3path);
+        g.attr("transform", "translate(" + (-topLeft[0] + 50) + "," + (-topLeft[1] + 50) + ")"    );
+
+
+        }// end reset
+
+
+        function pathStartPoint(path) {
+
+            var d = path.attr('d');
+            console.log(d)
+
+            dsplitted = d.split("L")[0].slice(1).split(",");
+            var point = []
+            point[0] = parseInt(dsplitted[0]);
+            point[1] = parseInt(dsplitted[1]);
+
+            return point;
+        }//end pathStartPoint
+
+
+        function transition(path) {
+            path.transition()
+                .duration(7500)
+                .attrTween("stroke-dasharray", tweenDash);
+                //if you want to have it repeat the sequence
+                // then uncomment this piece
+                //.each("end", function() {
+                //    d3.select(this).call(transition);
+                //}); // infinite loop
+        } //end transition
+
+        function tweenDash() {
+            var l = path.node().getTotalLength(); //total length of path
+            var i = d3.interpolateString("0," + l, l + "," + l); // interpolation of stroke-dasharray style attr
+            console.log(l)
+            return function(t) {
+                //t is fraction of time 0-1 since transition began
+                var marker = d3.select("#marker");
+                console.log(t)
+                // p is the point on the line (coordinates) at a given length
+                // along the line. In this case if l=50 and we're midway through
+                // the time then this would 25.
+                var p = path.node().getPointAtLength(t * l);
+
+                //Move the marker to that point
+                marker.attr("transform", "translate(" + p.x + "," + p.y + ")"); //move marker
+                return i(t);
+            }
+        } //end tweenDash
+
+
+        // Use Leaflet to implement a D3 geometric transformation.
+        // the latLngToLayerPoint is a Leaflet conversion method:
+        //Returns the map layer point that corresponds to the given geographical
+        // coordinates (useful for placing overlays on the map).
+        function projectPoint(x, y) {
+            var point = map.latLngToLayerPoint(new L.LatLng(y, x));
+            this.stream.point(point.x, point.y);
+        }//end projectPoint
+    });
+    </script>
+</body>
+
+</html>

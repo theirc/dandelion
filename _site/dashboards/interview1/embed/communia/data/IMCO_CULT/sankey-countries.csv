@@ -1,0 +1,41 @@
+source,target,value,Score,Color code
+Czech Republic,Article 4,17,100,#1a9641
+Estonia,Article 4,14,75,#1a9641
+Netherlands,Article 4,12,70,#1a9641
+Germany,Article 4,9,60,#1a9641
+Sweden,Article 4,11,40,#7fb38c
+Czech Republic,Article 13,14,40,#7fb38c
+Poland,Article 4,4,35,#1a9641
+Estonia,Article 13,13,30,#7fb38c
+Austria,Article 13,6,25,#7fb38c
+Bulgaria,Article 13,7,20,#7fb38c
+Sweden,Article 13,13,15,#7fb38c
+Latvia,Article 4,1,10,#1a9641
+Poland,Article 13,1,10,#1a9641
+Italy,Article 4,18,0,#ef6548
+United Kingdom,Article 4,22,0,#ef6548
+Netherlands,Article 13,16,0,#ef6548
+Greece,Article 4,6,-5,#ef6548
+Hungary,Article 4,1,-5,#990000
+Spain,Article 13,14,-5,#ef6548
+Slovakia,Article 4,2,-10,#990000
+Bulgaria,Article 4,1,-10,#990000
+Latvia,Article 13,1,-10,#990000
+Romania,Article 13,1,-10,#990000
+Lithuania,Article 4,4,-15,#ef6548
+Belgium,Article 4,4,-25,#990000
+Greece,Article 13,6,-25,#990000
+Slovakia,Article 13,4,-25,#990000
+Denmark,Article 4,3,-30,#990000
+Lithuania,Article 13,4,-30,#990000
+Denmark,Article 13,4,-30,#990000
+Germany,Article 13,20,-55,#ef6548
+Belgium,Article 13,12,-75,#990000
+Italy,Article 13,20,-80,#ef6548
+United Kingdom,Article 13,26,-110,#ef6548
+France,Article 13,31,-185,#990000
+France,Article 4,48,-320,#990000
+Spain,Article 4,,,
+Austria,Article 4,,,
+Romania,Article 4,,,
+Hungary,Article 13,,,

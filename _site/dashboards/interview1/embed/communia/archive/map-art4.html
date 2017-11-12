@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega/3.0.0-beta.33/vega.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vega-embed/3.0.0-beta.17/vega-embed.js"></script>
+  <style>
+    @import url(//fonts.googleapis.com/css?family=Lato:regular,bold);
+    body {
+      font-family: sans-serif;
+    }
+
+    .vega-actions a {
+      padding: 0.2em;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="vis"></div>
+
+  <script>
+    const opt = {
+      actions: false
+    };
+    const spec = {
+      "$schema": "https://vega.github.io/schema/vega/v3.0.json",
+      "width": 470,
+      "height": 500,
+      "padding": 5,
+      // "actions": "false",
+      "autosize": "fit",
+      "data": [{
+          "name": "unemp",
+          "url": "data/IMCO_CULT/map-scores-art4.tsv",
+          "format": {
+            "type": "tsv",
+            "parse": "auto"
+          }
+        },
+        {
+          "name": "europe",
+          "url": "data/IMCO_CULT/europe.topojson",
+          "format": {
+            "type": "topojson",
+            "feature": "europe"
+          },
+          "transform": [{
+              "type": "lookup",
+              "from": "unemp",
+              "key": "id",
+              "fields": ["id"],
+              "values": ["rate"]
+            },
+            {
+              "type": "filter",
+              "expr": "datum.rate != null"
+            }
+          ]
+        }
+      ],
+      "projections": [{
+        "name": "projection",
+        "type": "conicEqualArea",
+        "scale": 720,
+        "center": [88, 0]
+      }],
+
+      "scales": [{
+        "name": "color",
+        "type": "quantile",
+        "domain": [-320, -18, -8, 1, 26, 63, 100],
+        "range": {
+          "scheme": "redyellowgreen-6"
+        }
+      }],
+      "legends": [{
+        "fill": "color",
+        "orient": "bottom-right",
+        "title": "Total Score",
+        "entryPadding": 7,
+        "titlePadding": 19,
+        "offset": 150,
+        "encode": {
+          "symbols": {
+            "update": {
+              "shape": {
+                "value": "square"
+              },
+              "size": {
+                "value": 144
+              },
+              "stroke": {
+                "value": "#ccc"
+              },
+              "strokeWidth": {
+                "value": 0.2
+              }
+            }
+          },
+          "labels": {
+            "update": {
+              "text": {
+                "signal": "replace(datum.label,'–',' to ')"
+              },
+              "font": {
+                "value": "Lato"
+              },
+              "fontSize": {
+                "value": 14
+              },
+
+            }
+          },
+          "title": {
+            "update": {
+              "font": {
+                "value": "Lato"
+              },
+              "fontSize": {
+                "value": 14
+              },
+
+            }
+          }
+        }
+      }],
+
+      "marks": [{
+        "type": "shape",
+        "from": {
+          "data": "europe"
+        },
+        "encode": {
+          "enter": {
+            "tooltip": {
+              "signal": "datum.id + ': ' + format(datum.rate, 'd')"
+            }
+          },
+          "update": {
+            "fill": {
+              "scale": "color",
+              "field": "rate"
+            }
+          },
+          // "hover": { "fill": {"value": "red"} }
+        },
+        "transform": [{
+          "type": "geoshape",
+          "projection": "projection"
+        }]
+      }]
+    };
+    vega.embed('#vis', spec, opt);
+  </script>
+</body>
